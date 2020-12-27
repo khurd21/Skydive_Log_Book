@@ -1,0 +1,6 @@
+name: Kyle Hurd
+filename [DO NOT CHANGE should be 'log.csv']: log.csv
+current parachute: Fusion 135
+DOM: 2013
+weight [lbs]: 130
+parachute size [sq. ft.]: 135
