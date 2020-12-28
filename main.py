@@ -23,6 +23,10 @@ from csv import reader, writer
 ############################
 
 def main():
+    ''' Virtual skydiving logbook. Main() uses result from
+        display_menu [in the display module] to control the
+        state of the program. Everything is terminal based.
+    '''
     
     skydiver_info = fm.get_info_data(fm.app_path('assets/info.txt'))
     skydiver_info[1] = 'assets/' + skydiver_info[1]

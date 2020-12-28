@@ -1,8 +1,26 @@
+#############################
+# Name:        Kyle Hurd
+# Project:     Virtual Log Book
+# Description: Functions to display each scene and data from
+#              the skydiver's log history.
+############################
+
+
+# Modules
+############################
+
 from os import system, name
 import datetime
 import file_manip as fm
 
+
+# Functions
+############################
+
+
 def clear():
+    ''' Allows program to clear the page of the terminal.
+    '''
     
     # Windows
     if name == 'nt':
@@ -16,6 +34,15 @@ def clear():
 
 
 def display_stats(log_book, info):
+    ''' Displays the full statistic information of the user's jump
+        log to the terminal page.
+    
+    :param log_book: the entire log book of the user
+           info: the skydiver's personalized info and equipment
+    :type log_book: 2d list
+          info: list
+    :rtype: None
+    '''
     while True:
         clear()
         wing_load = float(info[4]) / float(info[5])
@@ -48,6 +75,14 @@ def display_stats(log_book, info):
 
 
 def display_add_jumps(log_book, name):
+    ''' Simple program to display the user's name and total jump.
+    
+    :param log_book: the entire log book [to get the last jump number]
+           name:     user's name
+    :type  log_book: 2d list
+           name:     string
+    :rtype: None
+    '''
     print( '############################################################')
     print( '# Jumper:     ', name.ljust(43,' '),                      '#')
     print( '# Total Jumps:', log_book[-1][0].ljust(43,' '),           '#')
@@ -58,6 +93,16 @@ def display_add_jumps(log_book, name):
 
 
 def display_jumps(log_book, name):
+    ''' Displays a condensed version of the user's jump history.
+        Up to 10 jumps displayed per page witht the ability to
+        scroll through all the jumps.
+    
+    :param log_book: the entire user's log history
+           name: the user's name
+    :type log_book: 2d list
+          name: string
+    :rtype: None
+    '''
     num_elements = len(log_book) - 1
     i = len(log_book) - 1
     if i - 9 < 1:
@@ -115,6 +160,15 @@ def display_jumps(log_book, name):
 
 
 def display_jump_number(log_book, name):
+    ''' Displays the full specs of each jump one by one. User can
+        cycle through each jump by pressing 'n' or 'p'
+        
+    :param log_book: the entire user's log of jumps
+           name: the user's name
+    :type  log_book: 2d list
+           name: string
+    :rtype: None
+    '''
 
     # Getting Jump Number
     clear()
@@ -195,6 +249,15 @@ def display_jump_number(log_book, name):
 
 
 def display_menu(log_book, name):
+    ''' The main menu for the program. Displays options available and
+        returns the selection given by the user.
+    
+    :param log_book: the entire log jump history of the user
+           name: the user's name
+    :type  log_book: 2d list
+           name: string
+    :rtype: char
+    '''
     clear()
     print( '############################################################')
     print( '# Jumper:     ', name.ljust(43,' '),                      '#')

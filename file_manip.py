@@ -1,13 +1,34 @@
+#############################
+# Name:        Kyle Hurd
+# Project:     Virtual Log Book
+# Description: Manages manipulation of data typically requested from the
+#              display module.
+############################
+
+
+# Modules
+############################
+
+
 from csv import reader, writer
 import display as d
 import datetime
 import os, sys
 
 
+# Functions
+############################
+
+
 def app_path(path):
     '''
     Borrowed from StackOverflow. Allows program to locate a dependent file
     when being placed into an executable file
+    
+    :param path: the local path to file
+    :type path: string
+    :rtype: string
+    :rformat: full path to the project
     '''
     frozen = 'not'
     if getattr(sys, 'frozen', False):
