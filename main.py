@@ -16,8 +16,8 @@
 
 import file_manip as fm
 import display as d
+import edit as e
 from csv import reader, writer
-
 
 # Main
 ############################
@@ -29,7 +29,6 @@ def main():
     '''
     
     skydiver_info = fm.get_info_data(fm.app_path('assets/info.txt'))
-    skydiver_info[1] = 'assets/' + skydiver_info[1]
     log_book = fm.get_log_data(fm.app_path(skydiver_info[1]))
     
    # d.display_jump_number(log_book, name, 200)
@@ -37,7 +36,7 @@ def main():
         ans = d.display_menu(log_book, skydiver_info[0])
         
         if ans == 'q':
-            quit()
+            break
         elif ans == 'd':
             d.display_jump_number(log_book, skydiver_info[0])
         elif ans == 'a':
@@ -46,8 +45,13 @@ def main():
             d.display_jumps(log_book, skydiver_info[0])
         elif ans == 's':
             d.display_stats(log_book, skydiver_info)
-            
+        elif ans == 'e':
+            e.edit_home(log_book,skydiver_info)
+    
+    # Official Log to view
+    fm.generate_log(log_book, skydiver_info)
     return
+
 
 if __name__ == '__main__':
     main()

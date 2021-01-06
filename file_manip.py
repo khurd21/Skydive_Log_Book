@@ -11,6 +11,8 @@
 
 
 from csv import reader, writer
+# from fpdf import FPDF
+
 import display as d
 import datetime
 import os, sys
@@ -19,6 +21,9 @@ import os, sys
 # Functions
 ############################
 
+
+# File Manip
+############################
 
 def app_path(path):
     '''
@@ -79,13 +84,13 @@ def save_info_file(file_name, info_list):
           info_list:  list of strings
     :rtype: N/A
     '''
-    with open(file_name, 'w' as outfile):
-        print(f'name: {info_list[0]}')
-        print(f'filename: {info_list[1]}')
-        print(f'current parachute: {info_list[2]}')
-        print(f'DOM: {info_list[3]')
-        print(f'weight [lbs]: {info_list[4]}')
-        print(f'parachute size [sq. ft.]: {info_list[5]}')
+    with open(file_name, 'w') as outfile:
+        print(f'name: {info_list[0]}', file=outfile)
+        print(f'filename: {info_list[1]}', file=outfile)
+        print(f'current parachute: {info_list[2]}', file=outfile)
+        print(f'DOM: {info_list[3]}', file=outfile)
+        print(f'weight [lbs]: {info_list[4]}', file=outfile)
+        print(f'parachute size [sq. ft.]: {info_list[5]}', file=outfile)
         
     return
     
@@ -106,6 +111,105 @@ def save_csv_file(file_name, csv_list):
     return
 
 
+def generate_log(log_book, skydiver_info):
+    pass
+    
+    
+# Setting Skydiver Info
+#######################################
+
+def get_name():
+    ''' Returns the new name inputted by the user
+    
+    :param: None
+    :rtype: string
+    '''
+    while True:
+        ans = input('-> Name: ').strip()
+        if len(ans) > 30:
+            print('30 character limit.')
+        else:
+            break
+            
+    return ans
+    
+    
+def get_parachute_brand():
+    ''' Returns the new parachute brand inputted by the user
+    
+    :param: None
+    :rtype: string
+    '''
+    while True:
+        ans = input('-> Par. Type: ').strip()
+        if len(ans) > 30:
+            print('30 character limit.')
+        else:
+            break
+    
+    return ans
+    
+    
+def get_dom():
+    ''' Returns the date of manufacture inputted by the user
+    
+    :param: None
+    :rtype: string
+    '''
+    # Getting current time and day
+    today = datetime.datetime.today()
+    
+    while True:
+        ans = input('-> DOM: ').strip()
+        try:
+            ans = int(ans)
+            if ans > today.year or ans < 1990:
+                print(f'Is {ans} correct [Y/N]?')
+                r = input('-> ').strip().lower()
+                if r == 'y':
+                    break
+            else:
+                break
+        except:
+            print('Invalid input.')
+            
+    return str(ans)
+            
+            
+def get_weight():
+    ''' Returns the weight inputted by the user
+    
+    :param: None
+    :rtype: string
+    '''
+    while True:
+        ans = input('-> Weight [lbs]: ').strip()
+        try:
+            ans = int(ans)
+            break
+        except:
+            print('Invalid input.')
+            
+    return str(ans)
+    
+
+def get_parachute_size():
+    ''' Returns the parachute size inputted by the user
+    
+    :param: None
+    :rtype: string
+    '''
+    while True:
+        ans = input('-> Parachute Size [sq. ft.]: ').strip()
+        try:
+            ans = int(ans)
+            break
+        except:
+            print('Invalid input.')
+    
+    return str(ans)
+            
+
 # Setting Log Info
 #######################################
 
@@ -115,21 +219,31 @@ def get_total_jumps(log_book):
     
     :param log_book: the entire log of the user's jumps
     :type log_book:  2d list
-    :rtype: ints [belly, freefly, wingsuit, canopy jumps and total freefall]
+    :rtype: ints [belly, freefly, wingsuit, canopy, coach, tandem jumps and total freefall]
     '''
-    b = f = c = t = w = 0.0
+    b = f = c = tot = w = a = t = 0.0
+    chars = 'btc'
     for item in log_book:
-        if item[6].lower() == 'b':
-            t += (int(item[2]) - 3000) * ( 1 / 12000)
-            b += 1
-        elif item[6].lower() == 'f':
-            t += (int(item[2]) - 3000) * (1 / 13500)
-            f += 1
-        elif item[6].lower() == 'c':
-            c += 1
-        elif item[6].lower() == 'w':
-            w += 1
-    return int(b), int(f), int(c), int(w), int(t)
+        if len(item[6]) == 1:
+            
+            if 'b' in item[6]:
+                tot += (int(item[2]) - 3000) * ( 1 / 12000)
+                b += 1
+            elif 't' in item[6]:
+                tot += (int(item[2]) - 3000) * ( 1 / 12000)
+                t += 1
+            elif 'a' in item[6]:
+                tot += (int(item[2]) - 3000) * ( 1 / 12000)
+                a += 1
+            elif 'f' in item[6]:
+                tot += (int(item[2]) - 3000) * (1 / 13500)
+                f += 1
+            elif 'c' in item[6]:
+                c += 1
+            elif 'w' in item[6]:
+                w += 1
+                
+    return int(b), int(f), int(c), int(w), int(a), int(t), int(tot)
      
 
 def get_date():
@@ -191,8 +305,14 @@ def get_location():
     :param None:
     :rtype: string
     '''
-    location = input('-> Location: ')
-    location = location.strip().replace(',', '')
+    while True:
+        location = input('-> Location: ')
+        location = location.strip().replace(',', '')
+        if len(location) > 15:
+            print('Max 15 characters.')
+        else:
+            break
+            
     return location
         
 
@@ -202,18 +322,24 @@ def get_aircraft():
     :param None:
     :rtype: string
     '''
-    print('Type in aircraft or select from list below:')
-    print('[1 - Otter, 2 - Caravan, 3 - King Air, 4 - Cessna 182]')
-    aircraft = input('-> ')
-    aircraft = aircraft.replace(',','').strip()
-    
-    if aircraft == '1':
+    while True:
+        print('Type in aircraft or select from list below:')
+        print('[1 - Otter, 2 - Caravan, 3 - King Air, 4 - Cessna 182]')
+        aircraft = input('-> ')
+        aircraft = aircraft.replace(',','').strip()
+        
+        if len(aircraft) > 15:
+            print('15 character limit exceeded')
+        else:
+            break
+            
+    if '1' in aircraft:
         return 'Otter'
-    elif aircraft == '2':
+    elif '2' in aircraft:
         return 'Caravan'
-    elif aircraft == '3':
+    elif '3' in aircraft:
         return 'King Air'
-    elif aircraft == '4':
+    elif '4' in aircraft:
         return 'Cessna 182'
         
     return aircraft
@@ -247,8 +373,10 @@ def get_type_of_jump():
     '''
     while True:
         print('[b - belly, f - freefly, w - wingsuit, c - canopy]')
+        print('[a - coach, t - tandem ]')
         type = input('-> Type of jump: ').strip()
-        if type == 'b' or type == 'f' or type == 'w' or type == 'c':
+        chars = 'bfwcat'
+        if len(type) == 1 and any((c in chars) for c in type):
             break
         else:
             print('Invalid format.')
@@ -308,7 +436,7 @@ def add_jumps(log_book, skydiver_info):
     print('How many jumps?')
     while True:
         try:
-            num_jumps = int(input('-> ').strip())
+            num_jumps = int(input('-> ').replace(',','').strip())
             break
         except:
             print('Enter a valid number')
@@ -330,5 +458,5 @@ def add_jumps(log_book, skydiver_info):
         jump.append(str(get_signature()))
         jump.append(notes)
         log_book.append(jump)
-        save_csv_file(app_path(skydiver_info[1], log_book))
+        save_csv_file(app_path(skydiver_info[1]), log_book)
     return

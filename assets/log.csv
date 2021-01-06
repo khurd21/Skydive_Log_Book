@@ -1,7 +1,2 @@
 jump no.,date,altitude,location,aircraft,equipment,type of jump,signature,note
-1,07/01/2017,13000,Kapowsin,Otter,220,Belly,D-20850,First jump
-2,07/01/2017,13000,Kapowsin,Otter,200,b,D-20850,2nd AFF Jump
-3,07/04/2017,13000,Kapowsin,Otter,200,b,D-20850,3rd AFF jump
-4,07/04/2017,13000,Kapowsin,Otter,200,b,D-20850,AFF Level 4
-5,07/09/2017,13000,Kapowsin,Otter,200,b,D-20850,AFF Level 5
-6,07/09/2017,13000,Kapowsin,Otter,200,b,D-20850,AFF Level 6
+1,07/01/2017,13000,Kapowsin,Otter,220,b,D-20850,First jump
